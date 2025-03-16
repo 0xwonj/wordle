@@ -23,15 +23,14 @@ src/
 ├── api/             # API routes, handlers, and error types
 ├── auth/            # Authentication logic (JWT, middleware, models)
 ├── bin/             # Binary targets (CLI client)
+├── common/          # Common utilities and helper functions
+├── core/            # Core application components and configurations
 ├── game/            # Core game logic and models
 ├── models/          # Shared data models
 ├── repository/      # Data access layer
 ├── server/          # Server configuration and setup
-├── config.rs        # Application configuration
 ├── lib.rs           # Library exports
-├── main.rs          # Server binary entry point
-├── state.rs         # Application state management
-└── utils.rs         # Utility functions
+└── main.rs          # Server binary entry point
 ```
 
 ### Binary Targets
