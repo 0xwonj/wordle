@@ -2,7 +2,7 @@ use chrono::{Datelike, NaiveDate, Utc};
 use once_cell::sync::Lazy;
 use parking_lot::Mutex;
 use rand::rngs::StdRng;
-use rand::{prelude::*, SeedableRng};
+use rand::{SeedableRng, prelude::*};
 use std::collections::HashMap;
 
 pub mod error;

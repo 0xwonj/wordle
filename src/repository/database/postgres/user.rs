@@ -8,9 +8,9 @@ use super::PostgresConnection;
 #[cfg(feature = "database")]
 use crate::auth::models::User;
 #[cfg(feature = "database")]
-use crate::repository::error::{RepositoryError, RepositoryResult};
-#[cfg(feature = "database")]
 use crate::repository::UserRepositoryTrait;
+#[cfg(feature = "database")]
+use crate::repository::error::{RepositoryError, RepositoryResult};
 
 /// PostgreSQL implementation of user repository
 #[cfg(feature = "database")]

@@ -8,9 +8,9 @@ use super::PostgresConnection;
 #[cfg(feature = "database")]
 use crate::game::models::Game;
 #[cfg(feature = "database")]
-use crate::repository::error::{RepositoryError, RepositoryResult};
-#[cfg(feature = "database")]
 use crate::repository::GameRepositoryTrait;
+#[cfg(feature = "database")]
+use crate::repository::error::{RepositoryError, RepositoryResult};
 
 /// PostgreSQL implementation of game repository
 #[cfg(feature = "database")]

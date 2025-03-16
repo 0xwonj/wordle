@@ -2,10 +2,9 @@ use std::sync::Arc;
 
 use anyhow::Result;
 
-// Import from our library instead of declaring modules
 use wordle::{
-    config::Config, init_logging, load_env, server, server::repository::init_repositories,
-    state::AppState,
+    common::config::Config, core::AppState, init_logging, load_env, server,
+    server::repository::init_repositories,
 };
 
 #[tokio::main]

@@ -1,15 +1,15 @@
 use std::sync::Arc;
 
 use axum::{
-    middleware,
+    Router, middleware,
     routing::{get, post},
-    Router,
 };
 
+pub mod error;
 pub mod handlers;
 
 use crate::auth::auth_middleware;
-use crate::state::AppState;
+use crate::core::AppState;
 
 /// Configure API routes
 pub fn router(state: Arc<AppState>) -> Router {

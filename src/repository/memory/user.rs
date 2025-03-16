@@ -5,8 +5,8 @@ use std::collections::HashMap;
 use uuid::Uuid;
 
 use crate::auth::models::User;
-use crate::repository::error::{RepositoryError, RepositoryResult};
 use crate::repository::UserRepositoryTrait;
+use crate::repository::error::{RepositoryError, RepositoryResult};
 
 /// In-memory implementation of user repository
 /// Useful for testing and development environments

@@ -1,10 +1,6 @@
-// Repository module for data access
-
 pub mod database;
 pub mod error;
-pub mod game;
 pub mod memory;
-pub mod user;
 
 use async_trait::async_trait;
 use uuid::Uuid;
@@ -41,10 +37,6 @@ pub trait UserRepositoryTrait: Send + Sync {
     /// Reset all users' current game IDs and return the count of updated users
     async fn reset_all_users_current_game(&self) -> RepositoryResult<usize>;
 }
-
-// Re-export memory implementations for backwards compatibility
-pub use memory::game::InMemoryGameRepository;
-pub use memory::user::InMemoryUserRepository;
 
 // Re-export database implementations
 #[cfg(feature = "database")]

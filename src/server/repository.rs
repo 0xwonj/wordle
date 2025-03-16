@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::config::Config;
+use crate::common::config::Config;
 use crate::repository::{GameRepositoryTrait, UserRepositoryTrait};
 
 /// Initialize repositories based on configuration
@@ -32,7 +32,9 @@ pub async fn init_repositories(
 
         Ok((game_repo, user_repo))
     } else {
-        tracing::info!("Database feature is enabled but database is disabled in config - using in-memory storage");
+        tracing::info!(
+            "Database feature is enabled but database is disabled in config - using in-memory storage"
+        );
 
         let game_repo =
             Arc::new(InMemoryGameRepository::new()) as Arc<dyn GameRepositoryTrait + Send + Sync>;
@@ -51,7 +53,7 @@ pub async fn init_repositories(
     Arc<dyn GameRepositoryTrait + Send + Sync>,
     Arc<dyn UserRepositoryTrait + Send + Sync>,
 )> {
-    use crate::repository::{InMemoryGameRepository, InMemoryUserRepository};
+    use crate::repository::memory::{InMemoryGameRepository, InMemoryUserRepository};
 
     tracing::info!("Database feature not enabled - using in-memory storage");
 

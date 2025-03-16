@@ -1,18 +1,18 @@
 use std::sync::Arc;
 
 use axum::{
-    extract::{Path, State},
     Json,
+    extract::{Path, State},
 };
 use axum_macros::debug_handler;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::auth::{Auth, AuthUserId};
+use crate::core::AppState;
 use crate::game::error::GameError;
 use crate::game::models::{Game, LetterResult as ModelLetterResult};
 use crate::repository::error::RepositoryError;
-use crate::state::AppState;
 
 #[derive(Debug, Serialize)]
 pub struct GameResponse {

@@ -11,8 +11,8 @@ use tower_http::trace::{self, TraceLayer};
 use tracing::Level;
 
 use crate::api;
-use crate::config::Config;
-use crate::state::AppState;
+use crate::common::config::Config;
+use crate::core::AppState;
 
 // Export the repository module
 pub mod repository;

@@ -1,9 +1,9 @@
-use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
+use jsonwebtoken::{Algorithm, DecodingKey, Validation, decode};
 use time::OffsetDateTime;
 
 use crate::auth::error::{AuthError, Result};
 use crate::auth::models::Claims;
-use crate::config::JwtConfig;
+use crate::common::config::JwtConfig;
 
 /// JWT authentication service
 pub struct JwtAuth {

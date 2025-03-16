@@ -8,7 +8,7 @@ use std::sync::Arc;
 use uuid::Uuid;
 
 use crate::auth::error::AuthError;
-use crate::state::AppState;
+use crate::core::AppState;
 
 /// Authentication middleware for protected routes
 pub async fn auth_middleware(

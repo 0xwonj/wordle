@@ -1,3 +1,5 @@
-/// In-memory repository implementations
 pub mod game;
 pub mod user;
+
+pub use game::InMemoryGameRepository;
+pub use user::InMemoryUserRepository;

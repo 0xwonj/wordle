@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use axum::{
     extract::{FromRequestParts, State},
-    http::{header, request::Parts, Extensions},
+    http::{Extensions, header, request::Parts},
 };
 use uuid::Uuid;
 
 use crate::auth::error::AuthError;
 use crate::auth::models::Claims;
-use crate::state::AppState;
+use crate::core::AppState;
 
 /// Auth extractor that provides the authenticated user ID and claims
 #[derive(Debug, Clone)]

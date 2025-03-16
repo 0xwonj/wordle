@@ -4,8 +4,8 @@ use std::collections::HashMap;
 use uuid::Uuid;
 
 use crate::game::models::Game;
-use crate::repository::error::{RepositoryError, RepositoryResult};
 use crate::repository::GameRepositoryTrait;
+use crate::repository::error::{RepositoryError, RepositoryResult};
 
 /// In-memory implementation of game repository
 /// Useful for testing and development environments

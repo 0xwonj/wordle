@@ -2,7 +2,7 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 use colored::*;
 use dialoguer::Input;
-use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
+use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
 use reqwest::{Client, ClientBuilder, StatusCode};
 use serde::{Deserialize, Serialize};
 use spinners::{Spinner, Spinners};
@@ -11,7 +11,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 
 // Import from our library - only what we actually use
-use wordle::{game::models::LetterResult as GameLetterResult, APP_VERSION};
+use wordle::{APP_VERSION, game::models::LetterResult as GameLetterResult};
 
 /// CLI client for testing Wordle REST API server
 #[derive(Parser, Debug)]
