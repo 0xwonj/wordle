@@ -1,0 +1,68 @@
+[package]
+name = "wordle"
+version = "0.1.0"
+edition = "2024"
+default-run = "wordle"
+
+# Define the main binary target (server)
+[[bin]]
+name = "wordle"
+path = "src/main.rs"
+
+# CLI client binary target
+[[bin]]
+name = "cli"
+path = "src/bin/cli.rs"
+
+# Define the library target
+[lib]
+name = "wordle"
+path = "src/lib.rs"
+
+[dependencies]
+axum = { version = "0.8.1", features = ["http2"] }
+axum-macros = "0.5.0"
+tokio = { version = "1.35.1", features = ["full"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.2", features = ["trace", "cors"] }
+hyper = { version = "1.1.0", features = ["http2"] }
+hyper-util = { version = "0.1.3", features = ["tokio"] }
+rustls = "0.23.23"
+rustls-pemfile = "2.0.0"
+tokio-rustls = "0.26.2"
+axum-server = { version = "0.7.2", features = ["tls-rustls"] }
+serde = { version = "1.0.194", features = ["derive"] }
+serde_json = "1.0.110"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+dotenv = "0.15.0"
+rand = "0.9.0"
+thiserror = "2.0.12"
+anyhow = "1.0.79"
+uuid = { version = "1.6.1", features = ["v4", "serde"] }
+chrono = { version = "0.4.33", features = ["serde"] }
+once_cell = "1.19.0"
+jsonwebtoken = "9.2.0"
+bcrypt = "0.17.0"
+time = "0.3.31"
+parking_lot = "0.12.1"
+async-trait = "0.1.74"
+sqlx = { version = "0.8", features = [
+    "runtime-tokio",
+    "tls-native-tls",
+    "postgres",
+], optional = true }
+
+# CLI-specific dependencies
+clap = { version = "4.4", features = ["derive"] }
+reqwest = { version = "0.12.14", features = ["json", "rustls-tls", "http2"] }
+colored = "3.0.0"
+dirs = "6.0.0"
+dialoguer = "0.11.0"
+spinners = "4.1"
+
+
+[features]
+default = []
+database = ["sqlx"]
+sqlx = ["dep:sqlx"]
