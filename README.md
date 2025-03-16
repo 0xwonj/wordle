@@ -1,4 +1,4 @@
-# Wordle Game Backend
+# Wordle
 
 A modern Wordle game backend implemented in Rust with the Axum framework, featuring HTTP/2 support, JWT authentication, and a CLI client.
 
