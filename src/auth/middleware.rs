@@ -8,11 +8,11 @@ use std::sync::Arc;
 use uuid::Uuid;
 
 use crate::auth::error::AuthError;
-use crate::core::AppState;
+use crate::auth::state::AuthState;
 
 /// Authentication middleware for protected routes
 pub async fn auth_middleware(
-    State(state): State<Arc<AppState>>,
+    State(state): State<Arc<AuthState>>,
     mut request: Request,
     next: Next,
 ) -> Result<Response, AuthError> {
@@ -62,6 +62,6 @@ pub async fn auth_middleware(
 ///             .layer(require_auth(state.clone()))
 ///     )
 /// ```
-pub fn require_auth(state: Arc<AppState>) -> impl Clone {
+pub fn require_auth(state: Arc<AuthState>) -> impl Clone {
     middleware::from_fn_with_state::<_, _, Request>(state, auth_middleware)
 }

@@ -8,7 +8,7 @@ use uuid::Uuid;
 
 use crate::auth::error::AuthError;
 use crate::auth::models::Claims;
-use crate::core::AppState;
+use crate::auth::state::AuthState;
 
 /// Auth extractor that provides the authenticated user ID and claims
 #[derive(Debug, Clone)]
@@ -33,7 +33,7 @@ impl Auth {
 impl<S> FromRequestParts<S> for Auth
 where
     S: Send + Sync,
-    State<Arc<AppState>>: FromRequestParts<S>,
+    State<Arc<AuthState>>: FromRequestParts<S>,
 {
     type Rejection = AuthError;
 
@@ -43,8 +43,8 @@ where
             return Ok(auth);
         }
 
-        // Otherwise extract the AppState and perform the full verification
-        let State(app_state) = State::<Arc<AppState>>::from_request_parts(parts, state)
+        // Otherwise extract the AuthState and perform the full verification
+        let State(auth_state) = State::<Arc<AuthState>>::from_request_parts(parts, state)
             .await
             .map_err(|_| AuthError::InternalError(anyhow::anyhow!("Failed to extract state")))?;
 
@@ -63,7 +63,7 @@ where
         let token = &token[7..]; // Skip "Bearer " prefix
 
         // Verify the token
-        let claims = app_state.jwt_auth().verify(token)?;
+        let claims = auth_state.jwt_auth().verify(token)?;
 
         // Extract user ID from claims
         let user_id = Uuid::parse_str(&claims.sub).map_err(|_| AuthError::Unauthorized)?;

@@ -7,10 +7,12 @@ use std::collections::HashMap;
 
 pub mod error;
 pub mod models;
+pub mod state;
 mod words;
 
 use self::error::GameError;
 use self::models::{Game, Guess, LetterResult};
+pub use self::state::GameState;
 
 // Daily word cache with more efficient Mutex implementation
 static DAILY_WORD_CACHE: Lazy<Mutex<HashMap<NaiveDate, String>>> =
