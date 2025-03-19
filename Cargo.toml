@@ -7,7 +7,7 @@ default-run = "wordle"
 # Define the main binary target (server)
 [[bin]]
 name = "wordle"
-path = "src/main.rs"
+path = "src/bin/server.rs"
 
 # CLI client binary target
 [[bin]]

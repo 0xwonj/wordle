@@ -1,6 +1,0 @@
-{
-  "api_url": "https://localhost:3000",
-  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFZERTQSJ9.eyJzdWIiOiI3NTA0NWVkYy00YmYyLTQ0ZmUtYWNkMS04NjA3YjlhZTNmZDYiLCJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE3NDIxODgxNDUsImV4cCI6MTc0MjI3NDU0NSwiaXNzIjoiYXV0aC1zZXJ2aWNlIiwiYXVkIjpbIndvcmRsZS1zZXJ2aWNlIl0sInJvbGVzIjpbInVzZXIiXX0.9fUew4RqxCYtYydPafa5s3S_vtYSECdpRDUXA1BH2kxbZ9eHcS_3HZX1Yevm_KQKl9xpZ8u72BEWiNNWLV80CA",
-  "user_id": "75045edc-4bf2-44fe-acd1-8607b9ae3fd6",
-  "username": "test"
-}
