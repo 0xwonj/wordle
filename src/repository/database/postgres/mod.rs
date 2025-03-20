@@ -4,6 +4,8 @@ pub mod user;
 
 #[cfg(feature = "database")]
 use sqlx::PgPool;
+#[cfg(feature = "database")]
+use std::sync::Arc;
 
 /// Database connection configuration for PostgreSQL
 #[cfg(feature = "database")]
@@ -33,7 +35,7 @@ impl PostgresConfig {
     pub async fn create_pool(&self) -> Result<PgPool, sqlx::Error> {
         let pool = sqlx::postgres::PgPoolOptions::new()
             .max_connections(self.max_connections)
-            .connect_timeout(std::time::Duration::from_secs(self.connection_timeout))
+            .acquire_timeout(std::time::Duration::from_secs(self.connection_timeout))
             .connect(&self.connection_url)
             .await?;
 

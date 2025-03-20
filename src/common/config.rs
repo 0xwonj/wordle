@@ -35,9 +35,6 @@ pub struct TlsConfig {
 /// Database configuration
 #[derive(Debug, Clone)]
 pub struct DatabaseConfig {
-    /// Whether to enable database persistence
-    pub enabled: bool,
-
     /// Database connection URL
     pub url: String,
 }
@@ -107,9 +104,6 @@ impl Config {
 
         // Load database configuration
         let database = DatabaseConfig {
-            enabled: env::var("DB_ENABLED")
-                .map(|v| v == "true" || v == "1")
-                .unwrap_or(false),
             url: env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite::memory:".to_string()),
         };
 

@@ -42,11 +42,9 @@ pub trait UserRepositoryTrait: Send + Sync {
 
 // Re-export database implementations
 #[cfg(feature = "database")]
-pub use database::postgres::game::PostgresGameRepository;
-#[cfg(feature = "database")]
-pub use database::postgres::user::PostgresUserRepository;
-#[cfg(feature = "database")]
-pub use database::postgres::{PostgresConfig, PostgresConnection};
+pub use database::postgres::{
+    PostgresConfig, PostgresConnection, game::PostgresGameRepository, user::PostgresUserRepository,
+};
 
 /// Initialize repositories based on configuration
 #[cfg(feature = "database")]
@@ -57,37 +55,23 @@ pub async fn init_repositories(
     Arc<dyn UserRepositoryTrait + Send + Sync>,
 )> {
     use crate::repository::{
-        InMemoryGameRepository, InMemoryUserRepository, PostgresConfig, PostgresConnection,
-        PostgresGameRepository, PostgresUserRepository,
+        PostgresConfig, PostgresConnection, PostgresGameRepository, PostgresUserRepository,
     };
 
-    if config.database.enabled {
-        tracing::info!("Using PostgreSQL database for persistence");
+    tracing::info!("Using PostgreSQL database");
 
-        // Initialize PostgreSQL connection
-        let db_config = PostgresConfig::new(&config.database.url);
-        let pool = db_config.create_pool().await?;
-        let connection = PostgresConnection::new(pool);
+    // Initialize PostgreSQL connection
+    let db_config = PostgresConfig::new(&config.database.url);
+    let pool = db_config.create_pool().await?;
+    let connection = PostgresConnection::new(pool);
 
-        // Create repositories
-        let game_repo = Arc::new(PostgresGameRepository::new(connection.clone()))
-            as Arc<dyn GameRepositoryTrait + Send + Sync>;
-        let user_repo = Arc::new(PostgresUserRepository::new(connection))
-            as Arc<dyn UserRepositoryTrait + Send + Sync>;
+    // Create repositories
+    let game_repo = Arc::new(PostgresGameRepository::new(connection.clone()))
+        as Arc<dyn GameRepositoryTrait + Send + Sync>;
+    let user_repo = Arc::new(PostgresUserRepository::new(connection))
+        as Arc<dyn UserRepositoryTrait + Send + Sync>;
 
-        Ok((game_repo, user_repo))
-    } else {
-        tracing::info!(
-            "Database feature is enabled but database is disabled in config - using in-memory storage"
-        );
-
-        let game_repo =
-            Arc::new(InMemoryGameRepository::new()) as Arc<dyn GameRepositoryTrait + Send + Sync>;
-        let user_repo =
-            Arc::new(InMemoryUserRepository::new()) as Arc<dyn UserRepositoryTrait + Send + Sync>;
-
-        Ok((game_repo, user_repo))
-    }
+    Ok((game_repo, user_repo))
 }
 
 /// Initialize repositories (in-memory fallback when database feature is not enabled)
@@ -100,7 +84,7 @@ pub async fn init_repositories(
 )> {
     use crate::repository::memory::{InMemoryGameRepository, InMemoryUserRepository};
 
-    tracing::info!("Database feature not enabled - using in-memory storage");
+    tracing::info!("Using in-memory storage");
 
     let game_repo =
         Arc::new(InMemoryGameRepository::new()) as Arc<dyn GameRepositoryTrait + Send + Sync>;

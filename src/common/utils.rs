@@ -1,7 +1,14 @@
 /// Initialize logging with sensible defaults
 pub fn init_logging() {
+    // Get log level from environment or use default
+    let log_level = std::env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string());
+
+    let env_filter = tracing_subscriber::EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new(log_level));
+
     tracing_subscriber::fmt()
-        .with_target(false)
+        .with_env_filter(env_filter)
+        .with_target(true)
         .compact()
         .init();
 }
