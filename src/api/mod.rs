@@ -9,6 +9,7 @@ use axum::{
 
 pub mod error;
 pub mod handlers;
+pub mod models;
 
 use crate::auth::{AuthState, auth_middleware};
 use crate::game::GameState;

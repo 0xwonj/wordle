@@ -2,6 +2,8 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use crate::game::error::GameError;
+
 /// Game model for storing game state
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Game {
@@ -85,5 +87,16 @@ impl Game {
     /// Get the number of attempts remaining
     pub fn attempts_remaining(&self) -> u8 {
         self.max_attempts.saturating_sub(self.guesses.len() as u8)
+    }
+
+    /// Add a guess to the game
+    pub fn add_guess(&mut self, guess: Guess) -> Result<(), GameError> {
+        if self.attempts_remaining() == 0 {
+            return Err(GameError::GameCompleted);
+        }
+
+        self.guesses.push(guess);
+        self.updated_at = Utc::now();
+        Ok(())
     }
 }

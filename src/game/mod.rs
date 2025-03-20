@@ -14,7 +14,7 @@ use self::error::GameError;
 use self::models::{Game, Guess, LetterResult};
 pub use self::state::GameState;
 
-// Daily word cache with more efficient Mutex implementation
+// Daily word cache
 static DAILY_WORD_CACHE: Lazy<Mutex<HashMap<NaiveDate, String>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));
 
@@ -78,8 +78,7 @@ impl GameService {
         };
 
         // Update the game
-        game.guesses.push(guess);
-        game.updated_at = Utc::now();
+        game.add_guess(guess)?;
 
         // Check if the player won
         if guess_word_lower == game.word {
@@ -97,7 +96,7 @@ impl GameService {
     fn get_daily_word(&self) -> String {
         let today = Utc::now().date_naive();
 
-        // Using parking_lot Mutex which doesn't require unwrap
+        // Acquire the mutex of the daily word cache
         let mut cache = DAILY_WORD_CACHE.lock();
 
         // Return cached word if available, otherwise generate and cache

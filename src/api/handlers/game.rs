@@ -3,83 +3,13 @@ use axum::{
     extract::{Path, State},
 };
 use axum_macros::debug_handler;
-use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::api::AppState;
+use crate::api::models::{CreateGameRequest, GameResponse, GuessRequest};
 use crate::auth::{Auth, AuthUserId};
 use crate::game::error::GameError;
-use crate::game::models::{Game, LetterResult as ModelLetterResult};
-
-#[derive(Debug, Serialize)]
-pub struct GameResponse {
-    pub id: Uuid,
-    pub attempts_remaining: u8,
-    pub completed: bool,
-    pub won: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub word: Option<String>,
-    pub guesses: Vec<GuessResponse>,
-}
-
-#[derive(Debug, Serialize, Clone)]
-pub struct GuessResponse {
-    pub word: String,
-    pub results: Vec<LetterResult>,
-}
-
-#[derive(Debug, Serialize, Clone, Copy)]
-pub enum LetterResult {
-    Correct,
-    WrongPosition,
-    Wrong,
-}
-
-impl From<ModelLetterResult> for LetterResult {
-    fn from(result: ModelLetterResult) -> Self {
-        match result {
-            ModelLetterResult::Correct => LetterResult::Correct,
-            ModelLetterResult::WrongPosition => LetterResult::WrongPosition,
-            ModelLetterResult::Wrong => LetterResult::Wrong,
-        }
-    }
-}
-
-#[derive(Debug, Deserialize)]
-pub struct CreateGameRequest {
-    // Empty struct
-}
-
-#[derive(Debug, Deserialize)]
-pub struct GuessRequest {
-    pub word: String,
-}
-
-impl From<Game> for GameResponse {
-    fn from(game: Game) -> Self {
-        // Only expose the secret word if the game is completed
-        let word = game.completed.then_some(game.word.clone());
-
-        // Convert the guesses to GuessResponse
-        let guesses = game
-            .guesses
-            .iter()
-            .map(|g| GuessResponse {
-                word: g.word.clone(),
-                results: g.results.iter().map(|&r| r.into()).collect(),
-            })
-            .collect();
-
-        Self {
-            id: game.id,
-            attempts_remaining: game.attempts_remaining(),
-            completed: game.completed,
-            won: game.won,
-            word,
-            guesses,
-        }
-    }
-}
+use crate::game::models::Game;
 
 /// Create a new game
 #[debug_handler]
@@ -94,10 +24,9 @@ pub async fn create_game(
         auth.user_id
     );
 
-    // Check if a new day started - this ensures everyone gets the same word
+    // Check if a new day started
     tracing::info!("Checking and updating date");
     state.game.check_and_update_date().await?;
-    tracing::info!("Date check completed successfully");
 
     // Check if user already has an existing game for today
     tracing::info!("Checking if user has an existing game");
@@ -140,7 +69,6 @@ pub async fn create_game(
         // Save user
         tracing::info!("Saving new user");
         state.auth.save_user(user).await?;
-        tracing::info!("User saved successfully");
     } else {
         tracing::info!("User already exists");
     }
@@ -148,7 +76,6 @@ pub async fn create_game(
     // Update the user's current game reference
     tracing::info!("Updating user's current game reference");
     state.auth.update_user_game(&auth.user_id, game.id).await?;
-    tracing::info!("User game reference updated successfully");
 
     // Return the game response
     tracing::info!("Returning game response");
